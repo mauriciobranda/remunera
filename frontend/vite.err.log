@@ -1,0 +1,49 @@
+[2m12:02:06 AM[22m [31m[1m[vite][22m[39m Pre-transform error: spawn EPERM
+[2m12:02:06 AM[22m [31m[1m[vite][22m[39m [31mInternal server error: spawn EPERM[39m
+  Plugin: [35mvite:esbuild[39m
+  File: [36mC:/Users/Usuario/Projetos/remunera/frontend/src/main.jsx[39m
+      at ChildProcess.spawn (node:internal/child_process:421:11)
+      at Object.spawn (node:child_process:796:9)
+      at ensureServiceIsRunning (C:\Users\Usuario\Projetos\remunera\frontend\node_modules\esbuild\lib\main.js:1975:29)
+      at transform (C:\Users\Usuario\Projetos\remunera\frontend\node_modules\esbuild\lib\main.js:1875:37)
+      at transformWithEsbuild (file:///C:/Users/Usuario/Projetos/remunera/frontend/node_modules/vite/dist/node/chunks/dep-BK3b2jBa.js:19207:26)
+      at TransformPluginContext.transform (file:///C:/Users/Usuario/Projetos/remunera/frontend/node_modules/vite/dist/node/chunks/dep-BK3b2jBa.js:19272:30)
+      at PluginContainer.transform (file:///C:/Users/Usuario/Projetos/remunera/frontend/node_modules/vite/dist/node/chunks/dep-BK3b2jBa.js:49075:19)
+      at async loadAndTransform (file:///C:/Users/Usuario/Projetos/remunera/frontend/node_modules/vite/dist/node/chunks/dep-BK3b2jBa.js:51953:27)
+      at async viteTransformMiddleware (file:///C:/Users/Usuario/Projetos/remunera/frontend/node_modules/vite/dist/node/chunks/dep-BK3b2jBa.js:62081:24)
+[2m12:02:29 AM[22m [31m[1m[vite][22m[39m Pre-transform error: spawn EPERM
+[2m12:02:31 AM[22m [31m[1m[vite][22m[39m [31mInternal server error: spawn EPERM[39m
+  Plugin: [35mvite:esbuild[39m
+  File: [36mC:/Users/Usuario/Projetos/remunera/frontend/src/components/KpiCard.jsx[39m
+      at ChildProcess.spawn (node:internal/child_process:421:11)
+      at Object.spawn (node:child_process:796:9)
+      at ensureServiceIsRunning (C:\Users\Usuario\Projetos\remunera\frontend\node_modules\esbuild\lib\main.js:1975:29)
+      at transform (C:\Users\Usuario\Projetos\remunera\frontend\node_modules\esbuild\lib\main.js:1875:37)
+      at transformWithEsbuild (file:///C:/Users/Usuario/Projetos/remunera/frontend/node_modules/vite/dist/node/chunks/dep-BK3b2jBa.js:19207:26)
+      at TransformPluginContext.transform (file:///C:/Users/Usuario/Projetos/remunera/frontend/node_modules/vite/dist/node/chunks/dep-BK3b2jBa.js:19272:30)
+      at PluginContainer.transform (file:///C:/Users/Usuario/Projetos/remunera/frontend/node_modules/vite/dist/node/chunks/dep-BK3b2jBa.js:49075:19)
+      at async loadAndTransform (file:///C:/Users/Usuario/Projetos/remunera/frontend/node_modules/vite/dist/node/chunks/dep-BK3b2jBa.js:51953:27)
+[2m12:03:50 AM[22m [31m[1m[vite][22m[39m [31mInternal server error: spawn EPERM[39m
+  Plugin: [35mvite:esbuild[39m
+  File: [36mC:/Users/Usuario/Projetos/remunera/frontend/src/App.jsx[39m
+      at ChildProcess.spawn (node:internal/child_process:421:11)
+      at Object.spawn (node:child_process:796:9)
+      at ensureServiceIsRunning (C:\Users\Usuario\Projetos\remunera\frontend\node_modules\esbuild\lib\main.js:1975:29)
+      at transform (C:\Users\Usuario\Projetos\remunera\frontend\node_modules\esbuild\lib\main.js:1875:37)
+      at transformWithEsbuild (file:///C:/Users/Usuario/Projetos/remunera/frontend/node_modules/vite/dist/node/chunks/dep-BK3b2jBa.js:19207:26)
+      at TransformPluginContext.transform (file:///C:/Users/Usuario/Projetos/remunera/frontend/node_modules/vite/dist/node/chunks/dep-BK3b2jBa.js:19272:30)
+      at PluginContainer.transform (file:///C:/Users/Usuario/Projetos/remunera/frontend/node_modules/vite/dist/node/chunks/dep-BK3b2jBa.js:49075:19)
+      at async loadAndTransform (file:///C:/Users/Usuario/Projetos/remunera/frontend/node_modules/vite/dist/node/chunks/dep-BK3b2jBa.js:51953:27)
+[2m12:03:50 AM[22m [31m[1m[vite][22m[39m Pre-transform error: spawn EPERM
+[2m12:03:56 AM[22m [31m[1m[vite][22m[39m [31mInternal server error: spawn EPERM[39m
+  Plugin: [35mvite:esbuild[39m
+  File: [36mC:/Users/Usuario/Projetos/remunera/frontend/src/App.jsx[39m
+      at ChildProcess.spawn (node:internal/child_process:421:11)
+      at Object.spawn (node:child_process:796:9)
+      at ensureServiceIsRunning (C:\Users\Usuario\Projetos\remunera\frontend\node_modules\esbuild\lib\main.js:1975:29)
+      at transform (C:\Users\Usuario\Projetos\remunera\frontend\node_modules\esbuild\lib\main.js:1875:37)
+      at transformWithEsbuild (file:///C:/Users/Usuario/Projetos/remunera/frontend/node_modules/vite/dist/node/chunks/dep-BK3b2jBa.js:19207:26)
+      at TransformPluginContext.transform (file:///C:/Users/Usuario/Projetos/remunera/frontend/node_modules/vite/dist/node/chunks/dep-BK3b2jBa.js:19272:30)
+      at PluginContainer.transform (file:///C:/Users/Usuario/Projetos/remunera/frontend/node_modules/vite/dist/node/chunks/dep-BK3b2jBa.js:49075:19)
+      at async loadAndTransform (file:///C:/Users/Usuario/Projetos/remunera/frontend/node_modules/vite/dist/node/chunks/dep-BK3b2jBa.js:51953:27)
+      at async viteTransformMiddleware (file:///C:/Users/Usuario/Projetos/remunera/frontend/node_modules/vite/dist/node/chunks/dep-BK3b2jBa.js:62081:24)

@@ -1,0 +1,805 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Portal da TransparÃªncia Caxias do Sul</title>
+    <meta
+      name="description"
+      content="Portal da TransparÃªncia Caxias do Sul (nÃ£o oficial), com busca pÃºblica por salÃ¡rios e cargos."
+    />
+    <style>
+      :root {
+        color-scheme: light;
+        --bg: #f8fafc;
+        --bg-soft: #eef4ff;
+        --text: #0f172a;
+        --muted: #64748b;
+        --card: rgba(255, 255, 255, 0.9);
+        --border: rgba(148, 163, 184, 0.22);
+        --shadow: 0 24px 60px -28px rgba(15, 23, 42, 0.22);
+        --brand: #2563eb;
+        --brand-dark: #1d4ed8;
+      }
+
+      html,
+      body {
+        min-height: 100%;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        color: var(--text);
+        background:
+          radial-gradient(circle at top left, rgba(37, 99, 235, 0.12), transparent 28%),
+          radial-gradient(circle at top right, rgba(14, 165, 233, 0.08), transparent 24%),
+          linear-gradient(180deg, var(--bg) 0%, var(--bg-soft) 100%);
+        font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+          sans-serif;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
+      }
+
+      .container {
+        width: min(1120px, calc(100% - 2rem));
+        margin: 0 auto;
+      }
+
+      .page {
+        position: relative;
+        overflow: hidden;
+      }
+
+      .blob {
+        position: absolute;
+        border-radius: 999px;
+        filter: blur(70px);
+        pointer-events: none;
+      }
+
+      .blob.left {
+        top: -2rem;
+        left: -3rem;
+        width: 18rem;
+        height: 18rem;
+        background: rgba(191, 219, 254, 0.5);
+      }
+
+      .blob.right {
+        top: 5rem;
+        right: -4rem;
+        width: 18rem;
+        height: 18rem;
+        background: rgba(186, 230, 253, 0.42);
+      }
+
+      .header {
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        border-bottom: 1px solid var(--border);
+        background: rgba(255, 255, 255, 0.88);
+        backdrop-filter: blur(14px);
+      }
+
+      .header-inner {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 0.45rem 0;
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 0.7rem;
+      }
+
+      .brand-mark {
+        width: 2.25rem;
+        height: 2.25rem;
+        border-radius: 0.8rem;
+        display: grid;
+        place-items: center;
+        color: #fff;
+        font-weight: 700;
+        font-size: 0.82rem;
+        background: var(--brand);
+        box-shadow: 0 8px 24px rgba(37, 99, 235, 0.22);
+      }
+
+      .brand-text strong,
+      .brand-text span,
+      p,
+      h1,
+      h2 {
+        margin: 0;
+      }
+
+      .brand-text strong {
+        display: block;
+        font-size: 0.9rem;
+        letter-spacing: -0.01em;
+      }
+
+      .brand-text span {
+        display: block;
+        margin-top: 0.1rem;
+        font-size: 0.75rem;
+        color: var(--muted);
+      }
+
+      .main {
+        padding: 1rem 0 4rem;
+      }
+
+      .hero {
+        text-align: center;
+        max-width: 54rem;
+        margin: 0 auto;
+      }
+
+      .eyebrow {
+        display: inline-flex;
+        align-items: center;
+        border: 1px solid rgba(191, 219, 254, 0.9);
+        border-radius: 999px;
+        padding: 0.3rem 0.8rem;
+        background: rgba(239, 246, 255, 0.92);
+        color: var(--brand-dark);
+        font-size: 0.7rem;
+        font-weight: 700;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+      }
+
+      h1 {
+        margin-top: 0.45rem;
+        font-size: clamp(1.8rem, 3vw, 2.55rem);
+        line-height: 1.06;
+        letter-spacing: -0.045em;
+      }
+
+      .subtitle {
+        margin-top: 0.25rem;
+        font-size: 0.92rem;
+        font-weight: 600;
+        color: var(--muted);
+      }
+
+      .support {
+        margin: 0.55rem auto 0;
+        max-width: 38rem;
+        font-size: 0.94rem;
+        line-height: 1.65;
+        color: #475569;
+      }
+
+      .period-note {
+        margin-top: 0.45rem;
+        font-size: 0.84rem;
+        color: var(--muted);
+      }
+
+      .search-shell {
+        margin: 0.95rem auto 0;
+        max-width: 52rem;
+        border: 1px solid var(--border);
+        border-radius: 1.5rem;
+        background: var(--card);
+        box-shadow: var(--shadow);
+        padding: 0.9rem;
+      }
+
+      .period-grid {
+        display: grid;
+        gap: 0.7rem;
+        margin-bottom: 0.8rem;
+      }
+
+      .period-field {
+        display: grid;
+        gap: 0.35rem;
+        text-align: left;
+      }
+
+      .period-field span {
+        font-size: 0.82rem;
+        font-weight: 600;
+        color: #475569;
+      }
+
+      .period-input,
+      .period-select {
+        width: 100%;
+        height: 3.35rem;
+        border-radius: 0.95rem;
+        border: 1px solid rgba(148, 163, 184, 0.34);
+        background: #f8fafc;
+        color: var(--text);
+        padding: 0 1rem;
+        font: inherit;
+        outline: none;
+      }
+
+      .period-input:focus,
+      .period-select:focus {
+        border-color: rgba(96, 165, 250, 0.9);
+        background: #fff;
+        box-shadow: 0 0 0 4px rgba(219, 234, 254, 0.8);
+      }
+
+      .search-grid {
+        display: grid;
+        gap: 0.7rem;
+      }
+
+      .search-input,
+      .search-select {
+        width: 100%;
+        height: 3.35rem;
+        border-radius: 0.95rem;
+        border: 1px solid rgba(148, 163, 184, 0.34);
+        background: #f8fafc;
+        color: var(--text);
+        padding: 0 1rem;
+        font: inherit;
+        outline: none;
+      }
+
+      .search-input::-moz-placeholder {
+        color: #94a3b8;
+      }
+
+      .search-input::placeholder {
+        color: #94a3b8;
+      }
+
+      .search-input:focus,
+      .search-select:focus {
+        border-color: rgba(96, 165, 250, 0.9);
+        background: #fff;
+        box-shadow: 0 0 0 4px rgba(219, 234, 254, 0.8);
+      }
+
+      .results {
+        margin-top: 0.9rem;
+        border: 1px solid var(--border);
+        border-radius: 1.45rem;
+        background: rgba(255, 255, 255, 0.92);
+        box-shadow: var(--shadow);
+        overflow: hidden;
+      }
+
+      .results[hidden] {
+        display: none;
+      }
+
+      .results-head {
+        padding: 1rem 1.1rem;
+        border-bottom: 1px solid rgba(148, 163, 184, 0.16);
+      }
+
+      .results-badge {
+        display: inline-flex;
+        align-items: center;
+        border-radius: 999px;
+        padding: 0.25rem 0.6rem;
+        background: rgba(239, 246, 255, 0.92);
+        color: var(--brand-dark);
+        font-size: 0.75rem;
+        font-weight: 700;
+      }
+
+      .results-head h2 {
+        margin-top: 0.35rem;
+        font-size: 1.08rem;
+        letter-spacing: -0.03em;
+      }
+
+      .results-status,
+      .results-meta {
+        margin-top: 0.3rem;
+        color: var(--muted);
+        line-height: 1.5;
+        font-size: 0.9rem;
+      }
+
+      .table-wrap {
+        overflow-x: auto;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        min-width: 760px;
+      }
+
+      thead {
+        background: rgba(248, 250, 252, 0.96);
+      }
+
+      th,
+      td {
+        padding: 0.88rem 1rem;
+        text-align: left;
+        border-bottom: 1px solid rgba(241, 245, 249, 1);
+      }
+
+      th {
+        color: #64748b;
+        font-size: 0.71rem;
+        text-transform: uppercase;
+        letter-spacing: 0.18em;
+      }
+
+      td {
+        color: #334155;
+        vertical-align: top;
+      }
+
+      tbody tr:hover {
+        background: rgba(239, 246, 255, 0.6);
+      }
+
+      .muted-row {
+        padding: 1rem 1.1rem 1.15rem;
+        color: var(--muted);
+      }
+
+      .pagination {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.75rem;
+        padding: 1rem 1.1rem 1.1rem;
+        border-top: 1px solid rgba(148, 163, 184, 0.16);
+      }
+
+      .pagination-info {
+        color: var(--muted);
+        font-size: 0.9rem;
+      }
+
+      .pagination-controls {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .pagination-button {
+        border: 1px solid rgba(191, 219, 254, 0.9);
+        background: linear-gradient(135deg, rgba(239, 246, 255, 0.95), rgba(224, 242, 254, 0.92));
+        color: var(--brand-dark);
+        border-radius: 0.95rem;
+        padding: 0.72rem 0.95rem;
+        font: inherit;
+        font-weight: 700;
+        cursor: pointer;
+      }
+
+      .pagination-button:disabled {
+        opacity: 0.45;
+        cursor: not-allowed;
+      }
+
+      @media (min-width: 768px) {
+        .main {
+          padding-top: 0.85rem;
+        }
+
+        .period-grid {
+          grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr) auto;
+          align-items: end;
+        }
+
+        .search-grid {
+          grid-template-columns: minmax(0, 1fr) 16rem auto;
+          align-items: end;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page">
+      <div class="blob left"></div>
+      <div class="blob right"></div>
+
+      <header class="header">
+        <div class="container header-inner">
+          <div class="brand">
+            <div class="brand-text">
+              <strong>Portal da TransparÃªncia</strong>
+              <span>Caxias do Sul</span>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <main class="container main">
+        <section class="hero">
+          <span class="eyebrow">Consulta pÃºblica de dados</span>
+          <h1>Mas quanto ganha esse povo?</h1>
+          <p class="support">Plataforma apartidÃ¡ria, focada em transparÃªncia e consulta pÃºblica de dados.</p>
+          <p class="period-note" id="source-note">Fonte dos dados: carregando arquivo local do perÃ­odo...</p>
+
+          <section id="busca" class="search-shell" aria-label="Busca do portal">
+            <div class="period-grid">
+              <label class="period-field" for="reference-input">
+                <span>ReferÃªncia</span>
+                <select id="reference-input" class="period-select">
+                  <option value="01/11/2025">01/11/2025</option>
+                  <option value="01/12/2025">01/12/2025</option>
+                  <option value="01/02/2026">01/02/2026</option>
+                  <option value="01/03/2026">01/03/2026</option>
+                </select>
+              </label>
+            </div>
+            <div class="search-grid">
+              <label class="sr-only" for="search">Buscar por nome</label>
+              <input
+                id="search"
+                class="search-input"
+                type="text"
+                placeholder="Ex: Nome"
+                autocomplete="off"
+              />
+              <label class="sr-only" for="cargo-filter">Filtrar por cargo</label>
+              <select id="cargo-filter" class="search-select" aria-label="Filtrar por cargo">
+                <option value="all">Todos os cargos</option>
+              </select>
+</div>
+          </section>
+        </section>
+
+        <section class="results" aria-live="polite" hidden>
+          <div class="results-head">
+            <span class="results-badge">Resultados</span>
+            <h2 id="results-title">Base carregada</h2>
+            <p id="results-status" class="results-status"></p>
+            <p id="results-meta" class="results-meta"></p>
+          </div>
+          <div id="results-root" class="table-wrap"></div>
+          <div id="pagination-root"></div>
+        </section>
+      </main>
+    </div>
+
+    <script>
+      const PAGE_SIZE = 20;
+
+      const state = {
+        records: [],
+        query: "",
+        cargo: "all",
+        page: 1,
+        reference: "01/03/2026",
+        loaded: false,
+      };
+
+      const els = {
+        referenceInput: document.getElementById("reference-input"),
+        searchInput: document.getElementById("search"),
+        cargoFilter: document.getElementById("cargo-filter"),
+        resultsTitle: document.getElementById("results-title"),
+        resultsStatus: document.getElementById("results-status"),
+        resultsMeta: document.getElementById("results-meta"),
+        resultsRoot: document.getElementById("results-root"),
+        paginationRoot: document.getElementById("pagination-root"),
+        resultsSection: document.querySelector(".results"),
+        sourceNote: document.getElementById("source-note"),
+      };
+
+      const currencyFormatter = new Intl.NumberFormat("pt-BR", {
+        style: "currency",
+        currency: "BRL",
+        maximumFractionDigits: 2,
+      });
+
+      function formatCurrency(value) {
+        return currencyFormatter.format(Number.isFinite(value) ? value : 0);
+      }
+
+      function normalizeText(value) {
+        return String(value ?? "")
+          .normalize("NFD")
+          .replace(/[\u0300-\u036f]/g, "")
+          .toLowerCase()
+          .trim();
+      }
+
+      function toNumber(value) {
+        return typeof value === "number" && Number.isFinite(value) ? value : 0;
+      }
+
+      function normalizeRecord(record, index) {
+        const folha = record && record.folha ? record.folha : {};
+
+        return {
+          id: record && record.id ? record.id : `registro-${index}`,
+          nome: String(record && record.nome ? record.nome : "Sem nome"),
+          cargo: String(record && record.cargo ? record.cargo : "Sem cargo"),
+          bruto: toNumber(folha.total_bruto),
+          descontos: toNumber(folha.descontos),
+          liquido: toNumber(folha.total_liquido),
+        };
+      }
+
+      function normalizeRecords(records) {
+        return Array.isArray(records) ? records.map(normalizeRecord) : [];
+      }
+
+      async function fetchJson(url) {
+        const response = await fetch(url);
+        if (!response.ok) {
+          const errorPayload = await response.json().catch(() => null);
+          throw new Error(
+            errorPayload && errorPayload.error ? errorPayload.error : `Falha ao carregar a base (${response.status}).`,
+          );
+        }
+
+        return response.json();
+      }
+
+      function referenceToKey(reference) {
+        return String(reference ?? "").replaceAll("/", "");
+      }
+
+      function getCargoOptions(records) {
+        return Array.from(new Set(records.map((record) => record.cargo).filter(Boolean))).sort((a, b) =>
+          a.localeCompare(b, "pt-BR"),
+        );
+      }
+
+      function shouldUseQuery(query) {
+        return normalizeText(query).length > 3;
+      }
+
+      function applyFilters(records, query, cargo) {
+        const rawQuery = String(query ?? "").trim();
+        const useQuery = shouldUseQuery(rawQuery);
+
+        return records.filter((record) => {
+          const matchesQuery = !useQuery || normalizeText(record.nome).includes(normalizeText(rawQuery));
+          const matchesCargo = cargo === "all" || record.cargo === cargo;
+          return matchesQuery && matchesCargo;
+        });
+      }
+
+      function getPagedRecords(records, page) {
+        const start = (page - 1) * PAGE_SIZE;
+        return records.slice(start, start + PAGE_SIZE);
+      }
+
+      function getPageCount(total) {
+        return Math.max(1, Math.ceil(total / PAGE_SIZE));
+      }
+
+      function setResultsState(title, status, meta) {
+        els.resultsTitle.textContent = title;
+        els.resultsStatus.textContent = status || "";
+        els.resultsMeta.textContent = meta || "";
+      }
+
+      function renderTable(records) {
+        if (records.length === 0) {
+          els.resultsRoot.innerHTML = '<div class="muted-row">Nenhum registro encontrado.</div>';
+          els.paginationRoot.innerHTML = "";
+          return;
+        }
+
+        const rows = records
+          .map(
+            (record) => `
+              <tr>
+                <td><strong>${record.nome}</strong></td>
+                <td>${record.cargo}</td>
+                <td>${formatCurrency(record.bruto)}</td>
+                <td>${formatCurrency(record.descontos)}</td>
+                <td><strong style="color:#1d4ed8">${formatCurrency(record.liquido)}</strong></td>
+              </tr>
+            `,
+          )
+          .join("");
+
+        els.resultsRoot.innerHTML = `
+          <table>
+            <thead>
+              <tr>
+                <th>Nome</th>
+                <th>Cargo</th>
+                <th>Bruto</th>
+                <th>Descontos</th>
+                <th>LÃ­quido</th>
+              </tr>
+            </thead>
+            <tbody>${rows}</tbody>
+          </table>
+        `;
+      }
+
+      function renderPagination(total, page) {
+        const pageCount = getPageCount(total);
+
+        if (total <= PAGE_SIZE) {
+          els.paginationRoot.innerHTML = "";
+          return;
+        }
+
+        const startItem = (page - 1) * PAGE_SIZE + 1;
+        const endItem = Math.min(page * PAGE_SIZE, total);
+
+        els.paginationRoot.innerHTML = `
+          <div class="pagination">
+            <div class="pagination-info">
+              Mostrando ${startItem}-${endItem} de ${total} registros
+            </div>
+            <div class="pagination-controls">
+              <button class="pagination-button" id="page-prev" type="button" ${page <= 1 ? "disabled" : ""}>
+                Anterior
+              </button>
+              <span class="pagination-info">PÃ¡gina ${page} de ${pageCount}</span>
+              <button class="pagination-button" id="page-next" type="button" ${page >= pageCount ? "disabled" : ""}>
+                PrÃ³xima
+              </button>
+            </div>
+          </div>
+        `;
+
+        const prev = document.getElementById("page-prev");
+        const next = document.getElementById("page-next");
+
+        if (prev && !prev.disabled) {
+          prev.addEventListener("click", () => {
+            state.page = Math.max(1, state.page - 1);
+            renderResults();
+          });
+        }
+
+        if (next && !next.disabled) {
+          next.addEventListener("click", () => {
+            state.page = Math.min(pageCount, state.page + 1);
+            renderResults();
+          });
+        }
+      }
+
+      function syncControls() {
+        els.searchInput.value = state.query;
+        els.cargoFilter.value = state.cargo;
+      }
+
+      function renderResults() {
+        if (!state.loaded) {
+          els.resultsSection.hidden = true;
+          els.resultsRoot.innerHTML = "";
+          els.paginationRoot.innerHTML = "";
+          return;
+        }
+
+        const rawQuery = String(state.query ?? "").trim();
+        const hasTypedQuery = rawQuery.length > 0;
+        const queryReady = shouldUseQuery(rawQuery);
+        const cargoOnly = state.cargo !== "all" && !hasTypedQuery;
+        const allowResults = queryReady || cargoOnly;
+
+        if (!allowResults) {
+          els.resultsSection.hidden = true;
+          els.resultsRoot.innerHTML = "";
+          els.paginationRoot.innerHTML = "";
+          return;
+        }
+
+        els.resultsSection.hidden = false;
+        const filtered = applyFilters(state.records, state.query, state.cargo);
+        const pageCount = getPageCount(filtered.length);
+
+        if (state.page > pageCount) {
+          state.page = pageCount;
+        }
+
+        const hasQuery = queryReady;
+        const hasCargo = state.cargo !== "all";
+        const totalLabel = `${filtered.length} registro${filtered.length === 1 ? "" : "s"} encontrado${filtered.length === 1 ? "" : "s"}`;
+
+        setResultsState(
+          totalLabel,
+          hasQuery && hasCargo ? "Consulta por nome e cargo." : hasQuery ? "Consulta por nome." : "Consulta por cargo.",
+          `Base local com ${state.records.length} registros.`,
+        );
+
+        renderTable(getPagedRecords(filtered, state.page));
+        renderPagination(filtered.length, state.page);
+      }
+
+      async function loadData() {
+        try {
+          state.loaded = false;
+          const requestedReference = state.reference;
+          els.resultsSection.hidden = true;
+          els.resultsRoot.innerHTML = "";
+          els.paginationRoot.innerHTML = "";
+
+          const referenceKey = referenceToKey(requestedReference);
+          const payload = await fetchJson(`/data/${referenceKey}/remuneracoes_raw.json`);
+
+          state.records = normalizeRecords(Array.isArray(payload) ? payload : payload.records || []);
+          state.loaded = true;
+
+          const cargoOptions = getCargoOptions(state.records);
+          els.cargoFilter.innerHTML =
+            '<option value="all">Todos os cargos</option>' +
+            cargoOptions
+              .map((option) => `<option value="${option.replaceAll('"', "&quot;")}">${option}</option>`)
+              .join("");
+
+          if (cargoOptions.length === 0) {
+            els.cargoFilter.innerHTML = '<option value="all">Nenhum cargo encontrado</option>';
+          }
+
+          els.searchInput.placeholder = state.records.length > 0 ? "Ex: Nome" : "Base vazia";
+          els.sourceNote.textContent = `Fonte dos dados: Referência ${requestedReference}. Arquivo local: data/${referenceKey}/remuneracoes_raw.json.`;
+
+          setResultsState("Base carregada", "", `Foram encontrados ${state.records.length} registros na base selecionada.`);
+          els.resultsSection.hidden = true;
+          els.resultsRoot.innerHTML = "";
+          els.paginationRoot.innerHTML = "";
+          renderResults();
+        } catch (error) {
+          state.loaded = false;
+          setResultsState(
+            "Não foi possível carregar a base",
+            error instanceof Error ? error.message : "Falha inesperada ao carregar dados.",
+            "",
+          );
+          els.sourceNote.textContent = "Fonte dos dados: não foi possível carregar o período selecionado.";
+          els.resultsSection.hidden = true;
+          els.resultsRoot.innerHTML = "";
+          els.paginationRoot.innerHTML = "";
+        }
+      }
+
+      els.searchInput.addEventListener("input", () => {
+        state.query = els.searchInput.value;
+        state.page = 1;
+        renderResults();
+      });
+
+      els.cargoFilter.addEventListener("change", () => {
+        state.cargo = els.cargoFilter.value;
+        state.page = 1;
+        renderResults();
+      });
+      els.referenceInput.addEventListener("change", () => {
+        state.reference = els.referenceInput.value || state.reference;
+        state.query = "";
+        state.cargo = "all";
+        state.page = 1;
+        els.searchInput.value = "";
+        els.cargoFilter.value = "all";
+        loadData();
+      });
+
+      syncControls();
+      loadData();
+    </script>
+  </body>
+</html>
+
+
