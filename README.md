@@ -5,9 +5,9 @@ Portal local para consulta de remuneracoes publicas da Prefeitura de Caxias do S
 ## O que este projeto faz
 
 - Exibe uma interface para busca por nome e cargo.
-- Carrega os dados diretamente de arquivos locais por referencia.
+- Carrega os dados diretamente de arquivos locais por periodo.
 - Mostra no navegador no maximo 20 registros por pagina.
-- Deixa claro o periodo e a fonte da base selecionada.
+- Mostra o tempo em anos de cada pessoa na prefeitura.
 
 ## Estrutura atual
 
@@ -28,7 +28,7 @@ frontend/public/data/01032026/
   remuneracoes_raw.csv
 ```
 
-Na tela, a referencia aparece como `01/11/2025`, `01/12/2025`, `01/02/2026` ou `01/03/2026` e aponta para a pasta local correspondente.
+Na tela, o periodo aparece como `01/11/2025`, `01/12/2025`, `01/02/2026` ou `01/03/2026` e aponta para a pasta local correspondente.
 
 ## Como abrir
 
@@ -51,7 +51,7 @@ Na tela, a referencia aparece como `01/11/2025`, `01/12/2025`, `01/02/2026` ou `
 
 ## Como funciona a consulta
 
-- O seletor de referencia recarrega os cargos e os nomes do periodo escolhido.
+- O seletor de periodo recarrega os cargos e os nomes do periodo escolhido.
 - A busca por nome so executa a partir de mais de 3 caracteres.
 - Se um cargo for escolhido sem texto, a consulta tambem retorna resultados.
 - Se a busca tiver 3 caracteres ou menos, a lista fica vazia.
@@ -61,7 +61,7 @@ Na tela, a referencia aparece como `01/11/2025`, `01/12/2025`, `01/02/2026` ou `
 
 - Este e um site nao oficial.
 - Nao existe dependencia de backend local para o fluxo atual.
-- Se voce adicionar outro periodo, crie outra pasta em `frontend/public/data/` usando a mesma logica da referencia.
+- Se voce adicionar outro periodo, crie outra pasta em `frontend/public/data/` usando a mesma logica do periodo.
 
 ## Estrutura relevante
 
@@ -81,4 +81,4 @@ remuneracoes_raw.json
 remuneracoes_raw.csv
 ```
 
-Depois, adicione a referencia correspondente no combobox da tela.
+Depois, adicione o periodo correspondente no combobox da tela.

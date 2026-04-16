@@ -56,7 +56,7 @@
       }
 
       .container {
-        width: min(1120px, calc(100% - 2rem));
+        width: min(1120px, calc(100% - 1rem));
         margin: 0 auto;
       }
 
@@ -145,7 +145,7 @@
       }
 
       .main {
-        padding: 1rem 0 4rem;
+        padding: 0.8rem 0 4rem;
       }
 
       .hero {
@@ -188,12 +188,6 @@
         font-size: 0.94rem;
         line-height: 1.65;
         color: #475569;
-      }
-
-      .period-note {
-        margin-top: 0.45rem;
-        font-size: 0.84rem;
-        color: var(--muted);
       }
 
       .search-shell {
@@ -287,7 +281,7 @@
       }
 
       .results-head {
-        padding: 1rem 1.1rem;
+        padding: 1rem 1rem 0.9rem;
         border-bottom: 1px solid rgba(148, 163, 184, 0.16);
       }
 
@@ -317,24 +311,39 @@
       }
 
       .table-wrap {
-        overflow-x: auto;
+        overflow-x: visible;
       }
 
       table {
         width: 100%;
         border-collapse: collapse;
-        min-width: 760px;
       }
 
       thead {
+        display: none;
+      }
+
+      tbody {
+        display: grid;
+        gap: 0.75rem;
+        padding: 0.9rem;
+      }
+
+      tbody tr {
+        display: grid;
+        gap: 0.2rem;
+        padding: 0.9rem;
+        border: 1px solid rgba(148, 163, 184, 0.16);
+        border-radius: 1rem;
         background: rgba(248, 250, 252, 0.96);
+        box-shadow: 0 12px 26px -20px rgba(15, 23, 42, 0.26);
       }
 
       th,
       td {
-        padding: 0.88rem 1rem;
+        padding: 0;
         text-align: left;
-        border-bottom: 1px solid rgba(241, 245, 249, 1);
+        border-bottom: 0;
       }
 
       th {
@@ -345,12 +354,28 @@
       }
 
       td {
+        display: grid;
+        grid-template-columns: minmax(6.5rem, 8rem) minmax(0, 1fr);
+        gap: 0.6rem;
         color: #334155;
         vertical-align: top;
       }
 
+      td::before {
+        content: attr(data-label);
+        color: #64748b;
+        font-size: 0.68rem;
+        font-weight: 700;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+      }
+
+      td strong {
+        color: inherit;
+      }
+
       tbody tr:hover {
-        background: rgba(239, 246, 255, 0.6);
+        background: rgba(239, 246, 255, 0.72);
       }
 
       .muted-row {
@@ -409,6 +434,38 @@
           grid-template-columns: minmax(0, 1fr) 16rem auto;
           align-items: end;
         }
+
+        thead {
+          display: table-header-group;
+          background: rgba(248, 250, 252, 0.96);
+        }
+
+        tbody {
+          display: table-row-group;
+          gap: 0;
+          padding: 0;
+        }
+
+        tbody tr {
+          display: table-row;
+          gap: 0;
+          padding: 0;
+          border: 0;
+          border-radius: 0;
+          background: transparent;
+          box-shadow: none;
+        }
+
+        th,
+        td {
+          padding: 0.88rem 1rem;
+          border-bottom: 1px solid rgba(241, 245, 249, 1);
+          display: table-cell;
+        }
+
+        td::before {
+          content: none;
+        }
       }
     </style>
   </head>
@@ -433,12 +490,11 @@
           <span class="eyebrow">Consulta pública de dados</span>
           <h1>Mas quanto ganha esse povo?</h1>
           <p class="support">Plataforma apartidária, focada em transparência e consulta pública de dados.</p>
-          <p class="period-note" id="source-note">Fonte dos dados: carregando arquivo local do período...</p>
 
           <section id="busca" class="search-shell" aria-label="Busca do portal">
             <div class="period-grid">
               <label class="period-field" for="reference-input">
-                <span>Referência</span>
+                <span>Período</span>
                 <select id="reference-input" class="period-select">
                   <option value="01/11/2025">01/11/2025</option>
                   <option value="01/12/2025">01/12/2025</option>
@@ -499,7 +555,6 @@
         resultsRoot: document.getElementById("results-root"),
         paginationRoot: document.getElementById("pagination-root"),
         resultsSection: document.querySelector(".results"),
-        sourceNote: document.getElementById("source-note"),
       };
 
       const currencyFormatter = new Intl.NumberFormat("pt-BR", {
@@ -524,7 +579,49 @@
         return typeof value === "number" && Number.isFinite(value) ? value : 0;
       }
 
-      function normalizeRecord(record, index) {
+      function parseReferenceDate(reference) {
+        const [day, month, year] = String(reference ?? "")
+          .split("/")
+          .map((part) => Number(part));
+
+        if (!day || !month || !year) {
+          return null;
+        }
+
+        return new Date(Date.UTC(year, month - 1, day));
+      }
+
+      function getCompletedYears(admissionValue, referenceDate) {
+        if (!(referenceDate instanceof Date) || Number.isNaN(referenceDate.getTime())) {
+          return null;
+        }
+
+        const admissionDate = new Date(admissionValue);
+
+        if (Number.isNaN(admissionDate.getTime())) {
+          return null;
+        }
+
+        let years = referenceDate.getUTCFullYear() - admissionDate.getUTCFullYear();
+        const monthDiff = referenceDate.getUTCMonth() - admissionDate.getUTCMonth();
+        const dayDiff = referenceDate.getUTCDate() - admissionDate.getUTCDate();
+
+        if (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)) {
+          years -= 1;
+        }
+
+        return Math.max(0, years);
+      }
+
+      function formatYears(value) {
+        if (!Number.isFinite(value)) {
+          return "N/D";
+        }
+
+        return `${value} ${value === 1 ? "ano" : "anos"}`;
+      }
+
+      function normalizeRecord(record, index, referenceDate) {
         const folha = record && record.folha ? record.folha : {};
 
         return {
@@ -534,11 +631,12 @@
           bruto: toNumber(folha.total_bruto),
           descontos: toNumber(folha.descontos),
           liquido: toNumber(folha.total_liquido),
+          anosPrefeitura: getCompletedYears(record && record.admissao, referenceDate),
         };
       }
 
-      function normalizeRecords(records) {
-        return Array.isArray(records) ? records.map(normalizeRecord) : [];
+      function normalizeRecords(records, referenceDate) {
+        return Array.isArray(records) ? records.map((record, index) => normalizeRecord(record, index, referenceDate)) : [];
       }
 
       async function fetchJson(url) {
@@ -604,11 +702,12 @@
           .map(
             (record) => `
               <tr>
-                <td><strong>${record.nome}</strong></td>
-                <td>${record.cargo}</td>
-                <td>${formatCurrency(record.bruto)}</td>
-                <td>${formatCurrency(record.descontos)}</td>
-                <td><strong style="color:#1d4ed8">${formatCurrency(record.liquido)}</strong></td>
+                <td data-label="Nome"><strong>${record.nome}</strong></td>
+                <td data-label="Cargo">${record.cargo}</td>
+                <td data-label="Anos na prefeitura">${formatYears(record.anosPrefeitura)}</td>
+                <td data-label="Bruto">${formatCurrency(record.bruto)}</td>
+                <td data-label="Descontos">${formatCurrency(record.descontos)}</td>
+                <td data-label="Líquido"><strong style="color:#1d4ed8">${formatCurrency(record.liquido)}</strong></td>
               </tr>
             `,
           )
@@ -620,6 +719,7 @@
               <tr>
                 <th>Nome</th>
                 <th>Cargo</th>
+                <th>Anos na prefeitura</th>
                 <th>Bruto</th>
                 <th>Descontos</th>
                 <th>Líquido</th>
@@ -735,7 +835,8 @@
           const referenceKey = referenceToKey(requestedReference);
           const payload = await fetchJson(`/data/${referenceKey}/remuneracoes_raw.json`);
 
-          state.records = normalizeRecords(Array.isArray(payload) ? payload : payload.records || []);
+          const referenceDate = parseReferenceDate(requestedReference);
+          state.records = normalizeRecords(Array.isArray(payload) ? payload : payload.records || [], referenceDate);
           state.loaded = true;
 
           const cargoOptions = getCargoOptions(state.records);
@@ -750,7 +851,6 @@
           }
 
           els.searchInput.placeholder = state.records.length > 0 ? "Ex: Nome" : "Base vazia";
-          els.sourceNote.textContent = `Fonte dos dados: Referência ${requestedReference}. Arquivo local: data/${referenceKey}/remuneracoes_raw.json.`;
 
           setResultsState("Base carregada", "", `Foram encontrados ${state.records.length} registros na base selecionada.`);
           els.resultsSection.hidden = true;
@@ -764,7 +864,6 @@
             error instanceof Error ? error.message : "Falha inesperada ao carregar dados.",
             "",
           );
-          els.sourceNote.textContent = "Fonte dos dados: não foi possível carregar o período selecionado.";
           els.resultsSection.hidden = true;
           els.resultsRoot.innerHTML = "";
           els.paginationRoot.innerHTML = "";
